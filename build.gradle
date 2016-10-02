@@ -1,0 +1,38 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+mainClassName = "com.sample.app.Main"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: logbackVersion
+    compile group: 'joda-time', name: 'joda-time', version: jodaVersion
+    compile group: 'com.google.guava', name: 'guava', version: guavaVersion
+
+    testCompile group: 'com.google.truth', name: 'truth', version: truthVersion
+    testCompile "junit:junit:${junitVersion}"
+}
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+}
+
+// create Gradle wrapper with command line `gradle wrapper` in terminal
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.1'
+}
+
+configurations.all {
+    exclude group: "org.slf4j", module: "slf4j-log4j12"
+    exclude group: "log4j", module: "log4j"
+}
